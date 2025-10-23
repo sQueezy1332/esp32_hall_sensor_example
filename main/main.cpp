@@ -4,15 +4,14 @@
 #define PIN_LED_BLUE GPIO_NUM_2
 #define PIN_LED_RED GPIO_NUM_4
 #define PIN_BTN 0
-#define KALMAN_KOEF 0.5
+#define KALMAN_KOEF 0.5f
 #define AVER_COUNT 64
-#define MAX_THOLD 35
+#define MAX_THOLD 35	//for 160mhz
 #define MIN_THOLD 26
 
 int Kalman(int res){
-    const float k = KALMAN_KOEF;
     static float old = res;
-    res = k * res + (1 - k) * old;
+    res = KALMAN_KOEF * res + (1 - KALMAN_KOEF) * old;
     return old = res;
 }
 bool led;
