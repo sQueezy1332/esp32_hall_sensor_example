@@ -29,7 +29,7 @@ extern "C" void app_main()
 	pinMode(PIN_LED_RED, OUTPUT);
 	pinMode(PIN_BTN, INPUT);
 	//gpio_set_drive_capability(PIN_LED_BLUE, GPIO_DRIVE_CAP_3);
-    led_positive();led_negative();
+    digitalWrite(PIN_LED_BLUE, led = 1);digitalWrite(PIN_LED_RED, 1);
     hall_sensor_init();
 	delay(1000);
 	led_off();
