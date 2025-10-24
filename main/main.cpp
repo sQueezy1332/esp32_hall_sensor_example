@@ -18,7 +18,7 @@ bool led;
 
 void led_positive() { digitalWrite(PIN_LED_RED, led = 1); digitalWrite(PIN_LED_BLUE, 0); }
 void led_negative() { digitalWrite(PIN_LED_BLUE, led = 1); digitalWrite(PIN_LED_RED, 0); }
-void led_off() { if(led) {digitalWrite(PIN_LED_BLUE, 0);  digitalWrite(PIN_LED_RED, 0);} led = 0; }
+void led_off() { if(led) { digitalWrite(PIN_LED_BLUE, 0);  digitalWrite(PIN_LED_RED, 0);} led = 0; }
 
 extern "C" void app_main() 
 {
@@ -41,14 +41,14 @@ extern "C" void app_main()
 		//ESP_LOGI("time","diff %lu\n",(uint32_t)uS - timer); //2895 //~45 uSec for 1 measure //160mhz
 		result = Kalman(result);
 		char magnet = result > MAX_THOLD ? 1 : result < MIN_THOLD ? -1 : 0;
-		if(magnet || !digitalRead(PIN_BTN)) { 
 			switch (magnet) {
 			case (char)-1:led_negative(); break; //gpio_set_direction(PIN_LED, GPIO_MODE_INPUT); 
 			case 1: led_positive(); break;//gpio_set_direction(PIN_LED, GPIO_MODE_OUTPUT); 
-			default: led_off(); break;
+			default: led_off(); 
+				if(digitalRead(PIN_BTN)) continue;
+				break;
 			}
 			DEBUG(result); DEBUG(' ');
 			if(++lf == 20) { lf = 0; DEBUGLN();}
-		} else if(led) { led_off(); }
     }
 }
