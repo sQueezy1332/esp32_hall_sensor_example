@@ -24,15 +24,16 @@ void led_off() { if(led) { digitalWrite(PIN_LED_BLUE, 0);  digitalWrite(PIN_LED_
 extern "C" void app_main() 
 {
     main_init();
+	//Serial.onReceive(uart_cb, true); //Serial.setRxTimeout(2);
     pinMode(PIN_LED_BLUE, OUTPUT);
 	pinMode(PIN_LED_RED, OUTPUT);
 	pinMode(PIN_BTN, INPUT);
 	//gpio_set_drive_capability(PIN_LED_BLUE, GPIO_DRIVE_CAP_3);
-    digitalWrite(PIN_LED_BLUE, 1);
+    led_positive();led_negative();
     hall_sensor_init();
 	delay(1000);
+	led_off();
 	DEBUGF("THRESHOLD: %u - %u\nStart reading hall sensor ...\n",MIN_THOLD, MAX_THOLD);
-	digitalWrite(PIN_LED_BLUE, 0);
     for (int result = 0, lf = 0, i;;delay(10)) {
 		//int timer = uS;
 		for (i = 0; i < AVER_COUNT; i++){
