@@ -16,20 +16,9 @@ int Kalman(int res){
 }
 bool led;
 
-void led_positive() {
-	digitalWrite(PIN_LED_RED, led = 1);
-	digitalWrite(PIN_LED_BLUE, 0);
-}
-
-void led_negative() {
-	digitalWrite(PIN_LED_BLUE, led = 1);
-	digitalWrite(PIN_LED_RED, 0);
-}
-void led_off() {
-	led = 0;
-	digitalWrite(PIN_LED_BLUE, 0); 
-	digitalWrite(PIN_LED_RED, 0); //-1 is true
-}
+void led_positive() { digitalWrite(PIN_LED_RED, led = 1); digitalWrite(PIN_LED_BLUE, 0); }
+void led_negative() { digitalWrite(PIN_LED_BLUE, led = 1); digitalWrite(PIN_LED_RED, 0); }
+void led_off() { if(led) {digitalWrite(PIN_LED_BLUE, 0);  digitalWrite(PIN_LED_RED, 0);} led = 0; }
 
 extern "C" void app_main() 
 {
@@ -49,7 +38,7 @@ extern "C" void app_main()
 			result += hall_sensor_read();
 		}
 		result /= AVER_COUNT;
-		//ESP_LOGI("time","diff %lu\n",(uint32_t)uS - timer); //2895 //~45 uSec for 1 measure
+		//ESP_LOGI("time","diff %lu\n",(uint32_t)uS - timer); //2895 //~45 uSec for 1 measure //160mhz
 		result = Kalman(result);
 		char magnet = result > MAX_THOLD ? 1 : result < MIN_THOLD ? -1 : 0;
 		if(magnet || !digitalRead(PIN_BTN)) { 
