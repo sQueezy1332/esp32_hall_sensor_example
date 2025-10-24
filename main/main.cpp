@@ -6,8 +6,8 @@
 #define PIN_BTN 0
 #define KALMAN_KOEF 0.5f
 #define AVER_COUNT 64
-#define MAX_THOLD 34	//for 160mhz
-#define MIN_THOLD 28
+#define MAX_THOLD 33	//for 160mhz
+#define MIN_THOLD 27
 
 int Kalman(int res){
     static float old = res;
