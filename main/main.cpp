@@ -1,3 +1,4 @@
+#define DEBUG_ENABLE
 #include "ESP_MAIN.h"
 #include "HallSensor.h"
 #include "driver/gpio.h"
