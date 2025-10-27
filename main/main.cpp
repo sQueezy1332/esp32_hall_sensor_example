@@ -19,12 +19,12 @@ bool led;
 
 void led_positive() { digitalWrite(PIN_LED_RED, led = 1); digitalWrite(PIN_LED_BLUE, 0); }
 void led_negative() { digitalWrite(PIN_LED_BLUE, led = 1); digitalWrite(PIN_LED_RED, 0); }
-void led_off() { if(led) { digitalWrite(PIN_LED_BLUE, 0);  digitalWrite(PIN_LED_RED, 0);} led = 0; }
+void led_off() { if(led) { digitalWrite(PIN_LED_BLUE, 0);  digitalWrite(PIN_LED_RED, 0); led = 0; }  }
+void uart_cb();
 
 extern "C" void app_main() 
 {
     main_init();
-	//Serial.onReceive(uart_cb, true); //Serial.setRxTimeout(2);
     pinMode(PIN_LED_BLUE, OUTPUT);
 	pinMode(PIN_LED_RED, OUTPUT);
 	pinMode(PIN_BTN, INPUT);
@@ -33,6 +33,7 @@ extern "C" void app_main()
     hall_sensor_init();
 	delay(1000);
 	led_off();
+	DEBUG("Compiled: " __DATE__ "\t" __TIME__ "\n");
 	DEBUGF("THRESHOLD: %u - %u\nStart reading hall sensor ...\n",MIN_THOLD, MAX_THOLD);
     for (int result = 0, lf = 0, i;;delay(10)) {
 		//int timer = uS;
@@ -42,15 +43,12 @@ extern "C" void app_main()
 		result /= AVER_COUNT;
 		//ESP_LOGI("time","diff %lu\n",(uint32_t)uS - timer); //2895 //~45 uSec for 1 measure //160mhz
 		result = Kalman(result);
-		char magnet = result > MAX_THOLD ? 1 : result < MIN_THOLD ? -1 : 0;
-			switch (magnet) {
-			case (char)-1:led_negative(); break; //gpio_set_direction(PIN_LED, GPIO_MODE_INPUT); 
-			case 1: led_positive(); break;//gpio_set_direction(PIN_LED, GPIO_MODE_OUTPUT); 
-			default: led_off(); 
-				if(digitalRead(PIN_BTN)) continue;
-				break;
-			}
-			DEBUG(result); DEBUG(' ');
-			if(++lf == 20) { lf = 0; DEBUGLN();}
-    }
+		if(result > MAX_THOLD ) led_positive(); 
+		else if (result < MIN_THOLD) led_negative();
+		else { led_off(); 
+			if(digitalRead(PIN_BTN)) continue;
+		}
+		DEBUG(result); DEBUG(' ');
+		if(++lf == 16) { lf = 0; DEBUGLN(); }
+	}
 }
