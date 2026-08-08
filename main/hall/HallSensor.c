@@ -5,7 +5,7 @@
 #define CONFIG_ADC_SUPPRESS_DEPRECATE_WARN 1
 #include "driver/adc.h"
 #else
-#include "esp_adc/adc_oneshot.h"
+#include "esp_adc/adc_oneshot.h" //dont work
 #endif
 //https://github.com/espressif/esp-idf/blob/12f36a021f511cd4de41d3fffff146c5336ac1e7/docs/en/migration-guides/release-5.x/5.0/peripherals.rst#L59
 //#include "esp_private/adc_share_hw_ctrl.h" //adc_power_acquire
