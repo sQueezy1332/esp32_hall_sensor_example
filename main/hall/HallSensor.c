@@ -49,13 +49,13 @@ static int adc_hal_hall_result(void)
 int hall_sensor_read(void)    //hall sensor without LNA //_get_value()
 {
     //adc_power_acquire();
-    //portENTER_CRITICAL(&rtc_spinlock); //ADC_ENTER_CRITICAL();
+    portENTER_CRITICAL(&rtc_spinlock); //ADC_ENTER_CRITICAL();
     //adc_ll_amp_disable(); // disable other peripherals.           //moved to init
     //RTCIO.hall_sens.xpd_hall = 1;  //adc_hal_hall_enable();  //moved to init
     //adc_ll_set_controller(ADC_UNIT_1, ADC_LL_CTRL_RTC);  // adc_hal_set_controller(ADC_UNIT_1, ADC_CTRL_RTC); //moved to init
     int hall_value = adc_hal_hall_result();
     //RTCIO.hall_sens.xpd_hall = 0;  // adc_hal_hall_disable();
-    //portEXIT_CRITICAL(&rtc_spinlock); // ADC_EXIT_CRITICAL();
+    portEXIT_CRITICAL(&rtc_spinlock); // ADC_EXIT_CRITICAL();
     //adc_power_release();
     return hall_value;
 }
