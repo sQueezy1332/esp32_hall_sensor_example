@@ -44,7 +44,7 @@ void app_main()
     for (uint32_t result = 0, lf = 0, i;;vTaskDelay(pdMS_TO_TICKS(10))) {
 		//int timer = uS;
 		for (i = 0; i < AVER_COUNT; i++){
-			result += Kalman(hall_sensor_read());
+			result += Kalman(hall_sensor_read());;
 		}
 		result /= AVER_COUNT;
 		//ESP_LOGI("time","diff %lu\n",(uint32_t)uS - timer); //2895 //~45 uSec for 1 measure //160mhz
