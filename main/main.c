@@ -41,7 +41,7 @@ void app_main()
 	led_off();
 	DEBUG("Compiled: " __DATE__ "\t" __TIME__ "\n");
 	DEBUGF("THRESHOLD: from %d to %d\nStart reading hall sensor ...\n", MIN_THOLD, MAX_THOLD);
-    for (uint32_t result = 0, lf = 0, i;;vTaskDelay(pdMS_TO_TICKS(10))) {
+    for (int result = 0, lf = 0, i;; result = 0) {
 		//int timer = uS;
 		for (i = 0; i < AVER_COUNT; i++){
 			result += Kalman(hall_sensor_read());;
@@ -52,7 +52,8 @@ void app_main()
 		if(result > MAX_THOLD ) led_positive(); 
 		else if (result < MIN_THOLD) led_negative();
 		else { led_off(); if(gpio_get_level(PIN_BTN)) continue; }
-		DEBUGF("%li ", result);
+		DEBUGF("%i ", result);
 		if(++lf == 16) { lf = 0; DEBUGLN(); }
+		vTaskDelay(pdMS_TO_TICKS(10));
 	}
 }
